@@ -36,12 +36,12 @@ function createMovieCard(movie) {
     const card = document.createElement("div");
     card.className = "group relative animate-fade-in overflow-hidden rounded-xl border border-surfaceBorder bg-surfaceLight transition-all duration-300 hover:border-golden/30";
 
-    // Check if already a favourite
     const alreadySaved = isFavourite(movie.id);
 
     card.innerHTML =
         '<div class="relative aspect-[2/3] ' + randomColorClass + ' flex items-center justify-center">' +
-        '<button class="heart-btn absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full transition-all duration-200">' +
+        (movie.poster_path ? '<img src="https://image.tmdb.org/t/p/w500' + movie.poster_path + '" class="absolute inset-0 w-full h-full object-cover" />' : '') +
+        '<button class="heart-btn absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-black/40 transition-all duration-200">' +
         '<svg class="w-4 h-4" fill="' + (alreadySaved ? 'white' : 'none') + '" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>' +
         '</button>' +
         '</div>' +
@@ -54,7 +54,6 @@ function createMovieCard(movie) {
         '<p class="mt-2 line-clamp-2 text-xs leading-relaxed text-textMuted">' + movie.overview + '</p>' +
         '</div>';
 
-    // Heart button click
     const heartBtn = card.querySelector(".heart-btn");
     const heartSvg = heartBtn.querySelector("svg");
 
@@ -65,13 +64,11 @@ function createMovieCard(movie) {
         });
 
         if (index !== -1) {
-            // Already a favourite → remove it
             favourites.splice(index, 1);
             localStorage.setItem("favourites", JSON.stringify(favourites));
             heartSvg.setAttribute("fill", "none");
             console.log("Removed from favourites:", movie.title);
         } else {
-            // Not a favourite → add it
             const movieToSave = {
                 id: movie.id,
                 title: movie.title,
