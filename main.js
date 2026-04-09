@@ -46,7 +46,48 @@ async function startApp() {
 }
 
 startApp();
+//  Search Modal Logic
+const searchModal = document.getElementById('search-modal');
+const openSearchBtn = document.getElementById('search-btn');
+const closeSearchBtn = document.getElementById('close-search');
+const modalSearchForm = document.getElementById('modal-search-form');
+const modalSearchInput = document.getElementById('modal-search-input');
 
+// Open modal
+openSearchBtn.addEventListener('click', () => {
+    searchModal.classList.remove('hidden');
+    modalSearchInput.focus();
+    document.body.style.overflow = 'hidden';
+});
+
+// Close modal
+const closeModal = () => {
+    searchModal.classList.add('hidden');
+    document.body.style.overflow = 'auto';
+};
+
+closeSearchBtn.addEventListener('click', closeModal);
+
+// Close on background click
+searchModal.addEventListener('click', (e) => {
+    if (e.target === searchModal || e.target.classList.contains('backdrop-blur-md')) {
+        closeModal();
+    }
+});
+
+// Handle search submission
+modalSearchForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const query = modalSearchInput.value.trim();
+    if (query) {
+        const results = await fetchMovies(query);
+        renderMovies(results);
+        closeModal();
+        // Update section title
+        const titleElement = document.querySelector('h2');
+        if (titleElement) titleElement.textContent = `Search results for: "${query}"`;
+    }
+});
 
 function isFavourite(movieId) {
     const favourites = JSON.parse(localStorage.getItem("favourites")) || [];
@@ -56,22 +97,17 @@ function isFavourite(movieId) {
 }
 
 function createMovieCard(movie) {
-
     const card = document.createElement('div');
-    // Using Leyla's Tailwind classes here
-    card.className = 'group relative animate-scale-in overflow-hidden rounded-xl border border-surfaceBorder bg-surfaceLight transition-all duration-300 hover:border-golden/40 hover:shadow-2xl hover:shadow-golden/10';
+    // Add hover:z-50 at the end 102 line, so the card floats above the others when hovered over
+    card.className = 'group relative animate-scale-in rounded-xl border border-surfaceBorder bg-surfaceLight transition-all duration-300 hover:border-golden/40 hover:shadow-2xl hover:shadow-golden/10 hover:z-50';
 
-    // Make description shorter (max 90 symbols)
-    const description = movie.overview && movie.overview.length > 90
-        ? movie.overview.substring(0, 90) + '...'
-        : movie.overview || 'No description...';
-
+    const description = movie.overview || 'No description available...';
     const alreadySaved = isFavourite(movie.id);
 
     card.innerHTML = `
-    <div class="relative aspect-[2/3] overflow-hidden">
+    <div class="relative aspect-[2/3] overflow-hidden rounded-xl">
         <img src="${movie.poster_path ? IMG_URL + movie.poster_path : 'https://via.placeholder.com/500x750'}" 
-                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110">
+                class="h-full w-full object-cover rounded-xl transition-transform duration-500 group-hover:scale-110">
         
         <button class="heart-btn absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-surface/60 text-textPrimary backdrop-blur-md transition-all hover:bg-heartRed hover:text-white">
             <svg class="w-5 h-5" fill="${alreadySaved ? 'white' : 'none'}" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -81,12 +117,16 @@ function createMovieCard(movie) {
         <div class="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent opacity-60"></div>
     </div>
 
-    <div class="p-4">
+    <div class="p-4 relative">
         <h3 class="truncate font-display text-sm font-semibold text-textPrimary mb-1">${movie.title}</h3>
-        <p class="text-[11px] leading-relaxed text-textMuted line-clamp-2 mb-3 h-8">
-            ${description}
-        </p>
-        <div class="flex items-center justify-between text-xs font-medium">
+        
+        <div class="relative h-8 mb-3"> 
+            <p class="absolute top-0 left-0 right-0 text-[11px] leading-relaxed text-textMuted line-clamp-2 group-hover:block transition-all duration-300 cursor-help bg-surfaceLight group-hover:p-3 group-hover:rounded-lg group-hover:shadow-2xl group-hover:z-50 max-h-[160px] overflow-y-auto" title="Hover to read full description">
+                ${description}
+            </p>
+        </div>
+
+        <div class="flex items-center justify-between text-xs font-medium pt-1">
             <div class="flex items-center gap-1">
                 <span class="text-golden">★</span>
                 <span class="text-textPrimary">${movie.vote_average.toFixed(1)}</span>
@@ -96,10 +136,12 @@ function createMovieCard(movie) {
     </div>
     `;
 
+    // Logic for the Favourite button 
     const heartBtn = card.querySelector(".heart-btn");
     const heartSvg = heartBtn.querySelector("svg");
 
-    heartBtn.addEventListener("click", function () {
+    heartBtn.addEventListener("click", function (e) {
+        e.stopPropagation(); // Stop propagation to prevent interference with search or other clicks
         const favourites = JSON.parse(localStorage.getItem("favourites")) || [];
         const index = favourites.findIndex(function (fav) {
             return fav.id === movie.id;
