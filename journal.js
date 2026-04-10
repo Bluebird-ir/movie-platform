@@ -17,28 +17,48 @@ function renderFavourites() {
     });
 }
 
+function getPlaceholderColor() {
+    const palette = [
+        "from-rose-500 to-pink-600",
+        "from-amber-500 to-orange-600",
+        "from-emerald-500 to-teal-600",
+        "from-sky-500 to-blue-600",
+        "from-indigo-500 to-violet-600",
+        "from-fuchsia-500 to-purple-600"
+    ];
+
+    const randomIndex = Math.floor(Math.random() * palette.length);
+    return palette[randomIndex];
+}
+
 function createJournalCard(movie) {
     const card = document.createElement("div");
     card.className = "group relative overflow-hidden rounded-xl border border-surfaceBorder bg-surfaceLight transition-all duration-300 hover:border-golden/30";
+    const placeholderGradient = getPlaceholderColor();
+    const posterMarkup = movie.poster_path
+        ? '<img src="https://image.tmdb.org/t/p/w500' + movie.poster_path + '" class="absolute inset-0 h-full w-full object-cover rounded-xl" />'
+        : '<div class="h-full w-full rounded-xl bg-gradient-to-br ' + placeholderGradient + ' flex items-center justify-center p-4 text-center">' +
+          '<span class="font-display text-xl font-semibold leading-tight text-white drop-shadow-lg">' + (movie.title || "Untitled Movie") + '</span>' +
+          '</div>';
 
-    card.innerHTML =
-        '<div class="relative aspect-[2/3] bg-surfaceBorder flex items-center justify-center">' +
-        (movie.poster_path ? '<img src="https://image.tmdb.org/t/p/w500' + movie.poster_path + '" class="absolute inset-0 w-full h-full object-cover" />' : '') +
-        '<button class="remove-btn absolute top-2 right-2 bg-black/50 rounded-full p-1.5 hover:bg-black/80 transition-colors">' +
-        '<svg class="w-4 h-4 text-golden" fill="currentColor" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>' +
-        '</button>' +
-        '</div>' +
-        '<div class="p-4 flex flex-col gap-3">' +
-        '<h3 class="truncate font-display text-sm font-semibold text-textPrimary">' + movie.title + '</h3>' +
-        '<div class="flex items-center gap-3 text-xs text-textMuted">' +
-        '<span class="flex items-center gap-1"><svg class="w-3 h-3 text-golden" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>' + movie.vote_average + '</span>' +
-        '<span class="flex items-center gap-1"><svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>' + (movie.release_date || "").slice(0, 4) + '</span>' +
-        '</div>' +
-        '<p class="mt-2 line-clamp-2 text-xs leading-relaxed text-textMuted">' + movie.overview + '</p>' +
-        '<div class="notes-list overflow-y-auto max-h-24 rounded-lg border border-surfaceBorder bg-surface px-2 py-1 flex flex-col gap-1"></div>' +
-        '<textarea class="note-input w-full rounded-lg border border-surfaceBorder bg-surface px-3 py-2 text-xs text-textPrimary placeholder-textMuted focus:outline-none focus:border-golden/50 resize-none" rows="2" placeholder="Add a note..."></textarea>' +
-        '<button class="save-note-btn rounded-lg bg-golden px-3 py-1.5 text-xs font-medium text-surface hover:bg-goldenDark transition-colors">Save note</button>' +
-        '</div>';
+    card.innerHTML = `
+        <div class="relative aspect-[2/3] bg-surfaceBorder flex items-center justify-center">
+            ${posterMarkup}
+            <button class="remove-btn absolute top-2 right-2 bg-black/50 rounded-full p-1.5 hover:bg-black/80 transition-colors">
+                <svg class="w-4 h-4 text-golden" fill="currentColor" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+        </div>
+        <div class="p-4 flex flex-col gap-3">
+            <h3 class="truncate font-display text-sm font-semibold text-textPrimary">${movie.title}</h3>
+            <div class="flex items-center gap-3 text-xs text-textMuted">
+                <span class="flex items-center gap-1"><svg class="w-3 h-3 text-golden" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>${movie.vote_average}</span>
+                <span class="flex items-center gap-1"><svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>${(movie.release_date || "").slice(0, 4)}</span>
+            </div>
+            <p class="mt-2 line-clamp-2 text-xs leading-relaxed text-textMuted">${movie.overview}</p>
+            <div class="notes-list overflow-y-auto max-h-24 rounded-lg border border-surfaceBorder bg-surface px-2 py-1 flex flex-col gap-1"></div>
+            <textarea class="note-input w-full rounded-lg border border-surfaceBorder bg-surface px-3 py-2 text-xs text-textPrimary placeholder-textMuted focus:outline-none focus:border-golden/50 resize-none" rows="2" placeholder="Add a note..."></textarea>
+            <button class="save-note-btn rounded-lg bg-golden px-3 py-1.5 text-xs font-medium text-surface hover:bg-goldenDark transition-colors">Save note</button>
+        </div>`;
 
     const saveBtn = card.querySelector(".save-note-btn");
     const noteInput = card.querySelector(".note-input");

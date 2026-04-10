@@ -1,4 +1,4 @@
-export const API_KEY = "API_KEY";
+export const API_KEY = "API-KEY";
 const ACCESS_TOKEN = "ACCESS_TOKEN";
 
 const BASE_URL = "https://api.themoviedb.org/3";

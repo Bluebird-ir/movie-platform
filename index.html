@@ -35,10 +35,12 @@
         .animate-scale-in {
             animation: scaleIn 0.3s ease-out both;
         }
+
         /* Hide the default scrollbar for Windows/Chrome */
         .overflow-y-auto::-webkit-scrollbar {
             width: 6px;
-            display: none; /* Hide completely until you hover over it with your mouse */
+            display: none;
+            /* Hide completely until you hover over it with your mouse */
         }
 
         /* Show it only when the mouse is over the movie card */
@@ -58,10 +60,13 @@
 
         /* For Firefox (it's harder to hide it completely, so we'll make it as unnoticeable as possible) */
         .overflow-y-auto {
-            scrollbar-width: none; /* Hide in normal state */
+            scrollbar-width: none;
+            /* Hide in normal state */
         }
+
         .group:hover .overflow-y-auto {
-            scrollbar-width: thin; /* Show when hovering */
+            scrollbar-width: thin;
+            /* Show when hovering */
             scrollbar-color: #FFD700 rgba(255, 255, 255, 0.05);
         }
     </style>
@@ -131,11 +136,14 @@
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="font-display text-lg font-bold text-golden">Search Movies</h3>
                     <button id="close-search" class="text-textMuted hover:text-textPrimary transition-colors">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M6 18L18 6M6 6l12 12" />
+                        </svg>
                     </button>
                 </div>
                 <form id="modal-search-form">
-                    <input id="modal-search-input" type="text" placeholder="Type movie name..." class="w-full bg-surface border border-surfaceBorder rounded-xl px-5 py-4 text-lg text-textPrimary focus:outline-none focus:border-golden transition-all" />
+                    <input id="modal-search-input" type="text" placeholder="Type movie name..."
+                        class="w-full bg-surface border border-surfaceBorder rounded-xl px-5 py-4 text-lg text-textPrimary focus:outline-none focus:border-golden transition-all" />
                     <p class="mt-3 text-xs text-textMuted italic">Press Enter to start searching</p>
                 </form>
             </div>
@@ -149,16 +157,8 @@
                 <p class="text-sm text-textMuted">Where every frame finds a fan and every favorite gets a home.</p>
             </div>
             <div class="flex flex-wrap items-center gap-3">
-                <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer"
-                    class="rounded-full border border-surfaceBorder px-4 py-2 text-sm font-medium text-textMuted transition-all duration-200 hover:-translate-y-0.5 hover:border-golden hover:text-golden">
-                    Instagram
-                </a>
-                <a href="https://x.com" target="_blank" rel="noopener noreferrer"
-                    class="rounded-full border border-surfaceBorder px-4 py-2 text-sm font-medium text-textMuted transition-all duration-200 hover:-translate-y-0.5 hover:border-golden hover:text-golden">
-                    X
-                </a>
                 <a href="mailto:contact@cinevault.app"
-                    class="text-sm text-textMuted transition-colors hover:text-textPrimary">
+                    class="rounded-full border border-surfaceBorder px-4 py-2 text-sm font-medium text-textMuted transition-all duration-200 hover:-translate-y-0.5 hover:border-golden hover:text-golden">
                     contact@cinevault.app
                 </a>
             </div>
