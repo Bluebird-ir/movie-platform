@@ -35,10 +35,12 @@
         .animate-scale-in {
             animation: scaleIn 0.3s ease-out both;
         }
+
         /* Hide the default scrollbar for Windows/Chrome */
         .overflow-y-auto::-webkit-scrollbar {
             width: 6px;
-            display: none; /* Hide completely until you hover over it with your mouse */
+            display: none;
+            /* Hide completely until you hover over it with your mouse */
         }
 
         /* Show it only when the mouse is over the movie card */
@@ -58,20 +60,23 @@
 
         /* For Firefox (it's harder to hide it completely, so we'll make it as unnoticeable as possible) */
         .overflow-y-auto {
-            scrollbar-width: none; /* Hide in normal state */
+            scrollbar-width: none;
+            /* Hide in normal state */
         }
+
         .group:hover .overflow-y-auto {
-            scrollbar-width: thin; /* Show when hovering */
+            scrollbar-width: thin;
+            /* Show when hovering */
             scrollbar-color: #FFD700 rgba(255, 255, 255, 0.05);
         }
     </style>
 </head>
 
-<body class="bg-surface text-textPrimary antialiased min-h-screen">
+<body class="bg-surface text-textPrimary antialiased min-h-screen flex flex-col">
 
     <!-- Navbar -->
     <nav class="sticky top-0 z-50 border-b border-surfaceBorder bg-surface/80 backdrop-blur-xl">
-        <div class="max-w-7xl mx-auto flex h-16 items-center justify-between px-4">
+        <div class="max-w-7xl mx-auto flex h-16 items-center gap-4 px-4">
             <div class="flex items-center gap-2 font-display text-xl font-bold tracking-tight text-golden">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="size-6">
@@ -80,16 +85,18 @@
                 </svg>
                 CineVault
             </div>
-            <div class="flex items-center gap-1">
+            <div class="flex-1 flex justify-center">
                 <button id="search-btn"
-                    class="flex items-center gap-2 rounded-lg border border-surfaceBorder bg-surfaceLight px-4 py-2 text-sm text-textMuted transition-colors hover:border-golden/40 hover:text-textPrimary">
+                    class="flex w-full max-w-sm items-center gap-2 rounded-xl border border-golden/30 bg-gradient-to-r from-surfaceLight to-surface px-5 py-2.5 text-sm text-textMuted shadow-lg shadow-black/10 transition-all duration-200 hover:-translate-y-0.5 hover:border-golden/60 hover:text-textPrimary">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <circle cx="11" cy="11" r="8" />
                         <path d="m21 21-4.3-4.3" />
                     </svg>
-                    <span class="hidden sm:inline">Search movies...</span>
+                    <span class="truncate">Search movie names...</span>
                 </button>
-                <a href="/" class="ml-2 rounded-lg px-3 py-2 text-sm font-medium bg-golden text-surface">Popular</a>
+            </div>
+            <div class="flex items-center gap-1">
+                <a href="/" class="rounded-lg px-3 py-2 text-sm font-medium bg-golden text-surface">Popular</a>
                 <a href="/journal.html"
                     class="flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-textMuted hover:text-textPrimary transition-colors">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -104,7 +111,7 @@
 
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 py-8">
+    <main class="max-w-7xl mx-auto w-full px-4 py-8 flex-1">
         <div class="mb-8">
             <div class="flex items-center gap-2">
                 <svg class="w-6 h-6 text-golden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -129,16 +136,37 @@
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="font-display text-lg font-bold text-golden">Search Movies</h3>
                     <button id="close-search" class="text-textMuted hover:text-textPrimary transition-colors">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"/></svg>
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M6 18L18 6M6 6l12 12" />
+                        </svg>
                     </button>
                 </div>
                 <form id="modal-search-form">
-                    <input id="modal-search-input" type="text" placeholder="Type movie name..." class="w-full bg-surface border border-surfaceBorder rounded-xl px-5 py-4 text-lg text-textPrimary focus:outline-none focus:border-golden transition-all" />
+                    <input id="modal-search-input" type="text" placeholder="Type movie name..."
+                        class="w-full bg-surface border border-surfaceBorder rounded-xl px-5 py-4 text-lg text-textPrimary focus:outline-none focus:border-golden transition-all" />
                     <p class="mt-3 text-xs text-textMuted italic">Press Enter to start searching</p>
                 </form>
             </div>
         </div>
     </div>
+
+    <footer class="mt-10 border-t border-surfaceBorder bg-surfaceLight/70 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto px-4 py-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+                <p class="font-display text-base font-semibold text-golden">CineVault</p>
+                <p class="text-sm text-textMuted">Where every frame finds a fan and every favorite gets a home.</p>
+            </div>
+            <div class="flex flex-wrap items-center gap-3">
+                <a href="mailto:contact@cinevault.app"
+                    class="rounded-full border border-surfaceBorder px-4 py-2 text-sm font-medium text-textMuted transition-all duration-200 hover:-translate-y-0.5 hover:border-golden hover:text-golden">
+                    contact@cinevault.app
+                </a>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 pb-6">
+            <p class="text-xs text-textMuted/80">© 2026 CineVault. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
 
 </html>

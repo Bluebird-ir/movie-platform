@@ -96,6 +96,20 @@ function isFavourite(movieId) {
     });
 }
 
+function getPlaceholderColor() {
+    const palette = [
+        "from-rose-500 to-pink-600",
+        "from-amber-500 to-orange-600",
+        "from-emerald-500 to-teal-600",
+        "from-sky-500 to-blue-600",
+        "from-indigo-500 to-violet-600",
+        "from-fuchsia-500 to-purple-600"
+    ];
+
+    const randomIndex = Math.floor(Math.random() * palette.length);
+    return palette[randomIndex];
+}
+
 function createMovieCard(movie) {
     const card = document.createElement('div');
     // Add hover:z-50 at the end 102 line, so the card floats above the others when hovered over
@@ -103,11 +117,16 @@ function createMovieCard(movie) {
 
     const description = movie.overview || 'No description available...';
     const alreadySaved = isFavourite(movie.id);
+    const placeholderGradient = getPlaceholderColor();
+    const posterMarkup = movie.poster_path
+        ? `<img src="${IMG_URL + movie.poster_path}" class="h-full w-full object-cover rounded-xl transition-transform duration-500 group-hover:scale-110">`
+        : `<div class="h-full w-full rounded-xl bg-gradient-to-br ${placeholderGradient} flex items-center justify-center p-4 text-center">
+                <span class="font-display text-xl font-semibold leading-tight text-white drop-shadow-lg">${movie.title || "Untitled Movie"}</span>
+           </div>`;
 
     card.innerHTML = `
     <div class="relative aspect-[2/3] overflow-hidden rounded-xl">
-        <img src="${movie.poster_path ? IMG_URL + movie.poster_path : 'https://via.placeholder.com/500x750'}" 
-                class="h-full w-full object-cover rounded-xl transition-transform duration-500 group-hover:scale-110">
+        ${posterMarkup}
         
         <button class="heart-btn absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-surface/60 text-textPrimary backdrop-blur-md transition-all hover:bg-heartRed hover:text-white">
             <svg class="w-5 h-5" fill="${alreadySaved ? 'white' : 'none'}" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
